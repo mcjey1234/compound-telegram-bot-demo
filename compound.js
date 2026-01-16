@@ -1,33 +1,35 @@
-// compound.js
 require('dotenv').config();
 const { ethers } = require('ethers');
 
-// Connect to Ethereum via Infura
 const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 
-// Example: cDAI token contract on mainnet
-const cDAI_ADDRESS = "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643";
-const cDAI_ABI = [
-  "function supplyRatePerBlock() view returns (uint256)"
-];
+const TOKENS = {
+  cDAI: {
+    address: "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
+    abi: ["function supplyRatePerBlock() view returns (uint256)"]
+  }
+};
 
-// Function to calculate APY from Compound
-async function getMarketAPY() {
+async function getMarketAPY(tokenName = 'cDAI') {
   try {
-    const cDAI = new ethers.Contract(cDAI_ADDRESS, cDAI_ABI, provider);
-    const ratePerBlock = await cDAI.supplyRatePerBlock();
+    if (!TOKENS[tokenName]) throw new Error(`Token ${tokenName} not supported`);
 
-    // Convert BigNumber to number and calculate APY
-    const blocksPerDay = 6570;          // ~Ethereum blocks per day
+    const { address, abi } = TOKENS[tokenName];
+    const cToken = new ethers.Contract(address, abi, provider);
+
+    const ratePerBlockBN = await cToken.supplyRatePerBlock();
+    const ratePerBlock = parseFloat(ethers.formatUnits(ratePerBlockBN, 18));
+
+    const blocksPerDay = 6570;
     const daysPerYear = 365;
-    const ratePerDay = (ratePerBlock / 1e18) * blocksPerDay;
-    const apy = ((Math.pow((1 + ratePerDay), daysPerYear) - 1) * 100).toFixed(2);
+    const ratePerDay = ratePerBlock * blocksPerDay;
+    const apy = (Math.pow(1 + ratePerDay, daysPerYear) - 1) * 100;
 
-    return `${apy}%`;
+    return `${apy.toFixed(4)}%`;
   } catch (err) {
-    console.error("Error fetching APY:", err);
+    console.error("Error fetching APY:", err.message);
     return "N/A";
   }
 }
 
-module.exports = { getMarketAPY, provider };
+module.exports = { getMarketAPY, provider, TOKENS };
