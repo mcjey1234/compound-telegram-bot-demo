@@ -18,3 +18,11 @@ This repository is a **read-only demo**, intended to demonstrate understanding o
 - Responds to `/apy` command in Telegram
 - Logs user commands for demonstration purposes
 - Lightweight, safe, and fully compatible with testnet
+
+## Demo Screenshots
+
+**1️⃣ Bot running in Telegram**  
+![Bot Demo](https://github.com/mcjey1234/compound-telegram-bot-demo/blob/main/assets/Screenshot%20from%202026-01-16%2012-39-46.png)
+
+
+https://github.com/mcjey1234/compound-telegram-bot-demo/blob/main/assets/Screenshot%20from%202026-01-16%2012-26-11.png)
