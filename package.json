@@ -1,0 +1,17 @@
+{
+  "name": "compound-telegram-bot-demo",
+  "version": "1.0.0",
+  "description": "## Overview This is a **mini Telegram bot demo** designed to show basic interaction with the Compound protocol on Ethereum testnet.   It serves as a **proof-of-skill** project for multi-chain DeFi development, Telegram automation, and EVM integration — directly aligned with advanced Compound automation tools and SDK development.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "ethers": "^6.16.0",
+    "node-telegram-bot-api": "^0.67.0"
+  }
+}
